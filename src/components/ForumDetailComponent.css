@@ -1,0 +1,125 @@
+
+.forum-detail {
+  display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+.forum-detail .header {
+  display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem;
+background-color: #f5f5f5;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.header nav {
+  display: flex;
+  align-items: center;
+}
+
+.header nav ul {
+display: flex;
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.header nav li {
+  margin-right: 1rem;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+
+.forum-detail nav ul li button.logout-button {
+  background-color: #333;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+   border-radius: 50px;
+}
+
+.forum-detail nav ul li button.logout-button:hover {
+  background-color: #ccc;
+}
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+  font-family: Arial, sans-serif;
+  align-items: center;
+}
+
+.chat-window ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.chat-window ul li {
+  margin-bottom: 10px;
+}
+
+.chat-window .replies {
+  margin-left: 20px;
+  border-left: 1px solid #ddd;
+  padding-left: 10px;
+}
+
+.chat-window textarea {
+  width: 90%;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.chat-window button {
+  display: block;
+  margin-top: 10px;
+}
+
+.like-button {
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: 10px;
+}
+
+.pinned {
+  background-color: #f0f0f0;
+  
+}
+
+.post div {
+  margin-bottom: 10px;
+}
+
+.pin-button, .like-button, .reply-button {
+  cursor: pointer;
+  margin-left: 10px;
+  color: #333;
+}
+
+.notification {
+  background-color: #f0f8ff; 
+  border-left: 5px solid #007bff; 
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.mention {
+  color: #007bff; 
+  font-weight: bold; 
+}
+

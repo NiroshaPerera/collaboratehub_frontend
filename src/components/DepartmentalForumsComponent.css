@@ -1,0 +1,154 @@
+
+.departmental-forums {
+  display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+
+.header nav {
+  display: flex;
+  align-items: center;
+}
+
+.header nav ul {
+display: flex;
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.header nav li {
+  margin-right: 1rem;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.forums-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 68vh;
+  font-family: Arial, sans-serif;
+}
+
+.forums-list {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.forums-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.forums-list li {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+
+.forums-list li svg {
+  margin-right: 10px; 
+  font-size: 1.2rem; 
+  color: #333; 
+}
+
+
+.forums-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.forum-posts {
+  padding: 20px;
+}
+
+.forum-posts ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.forum-posts li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.forum-posts form {
+  margin-top: 20px;
+}
+
+.forum-posts textarea {
+  width: 90%;
+  padding: 10px;
+  resize: vertical;
+}
+
+.forum-posts button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.forum-posts button:hover {
+  background-color: #ccc;
+}
+.forum-posts .link {
+  margin-top: 20px;
+  text-align: left; 
+}
+
+.forum-posts .link a {
+  width: 175px;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.forum-posts .link a:hover {
+  background-color: #ccc;
+  color: #fff;
+  transform: scale(1.05); 
+}
+
+
+@media (min-width: 600px) {
+  .forums-container {
+    flex-direction: row;
+  }
+
+  .forums-list {
+    flex: 1;
+    border-right: 1px solid #ddd;
+    border-bottom: none;
+  }
+
+  .forum-posts {
+    flex: 2;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}

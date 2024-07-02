@@ -1,0 +1,89 @@
+
+.user-profile {
+    margin: 20px auto; 
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px; 
+    width: 500px; 
+  }
+  
+  .user-profile h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .user-profile p {
+    margin-bottom: 5px;
+  }
+  
+  .user-profile img {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%; 
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  
+  .edit-profile-form {
+    display: flex; 
+    flex-wrap: wrap; 
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  
+  .edit-profile-form label {
+    width: 120px; 
+    margin-bottom: 5px;
+  }
+  
+  .edit-profile-form input,
+  .edit-profile-form textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .edit-profile-form button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .edit-profile-form button:hover {
+    background-color: #ccc;
+  }
+  
+  .edit-profile {
+    display: flex; 
+    flex-wrap: wrap; 
+    margin-top: 20px;
+    padding: 20px;
+    border: none;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  .edit-profile button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .edit-profile-button:hover {
+    background-color: #ccc;
+  }

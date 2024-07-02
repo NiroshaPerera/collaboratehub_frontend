@@ -1,0 +1,154 @@
+.view-events {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+ 
+  }
+  
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.view-events .header {
+  display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem;
+background-color: #f5f5f5;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.header nav {
+  display: flex;
+  align-items: center;
+}
+
+.header nav ul {
+display: flex;
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.header nav li {
+  margin-right: 1rem;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.view-events nav ul li button.logout-button {
+  background-color: #333;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+   border-radius: 5px;
+}
+
+.view-events nav ul li button.logout-button:hover {
+  background-color: #ccc;
+}
+
+  .view-events h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .view-events .event-list {
+    margin: 20px 0;
+    min-height: 60vh;
+  }
+
+  .view-events .event-list li svg {
+    margin-right: 10px; 
+    margin-left: 10px;
+    font-size: 1.2rem; 
+    color: #333; 
+  }
+  
+  .view-events .event-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .view-events .event-list li {
+    padding: 10px;
+   
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .view-events .event-list li:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .event-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .event-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .event-modal-content h3 {
+    margin-bottom: 20px;
+  }
+  
+  .event-modal-content p {
+    margin-bottom: 20px;
+  }
+  
+  .event-modal-content button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .event-modal-content button:hover {
+    background-color: #ccc;
+  }
+  
+  
+ 
+ 
+ @media (max-width: 768px) {
+    .view-events .header nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .view-events .header nav li {
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+    }
+ }
+    

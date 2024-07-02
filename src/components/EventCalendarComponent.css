@@ -1,0 +1,122 @@
+.event-calendar {
+  display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    align-items: center;
+  }
+
+  .event-list {
+    margin-top: 20px; 
+  }
+
+  .event-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .event-list li {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .event-list li:hover {
+    background-color: #f0f0f0;
+  }
+
+  .event-list button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+  }
+  
+  .event-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .event-modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .event-modal-content button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    background: #333;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: fit-content;
+  }
+  
+  .event-modal-content button:hover {
+    background: #ccc;
+  }
+  
+  .event-modal-content button:nth-child(2) {
+    background: #dc3545;
+  }
+  
+  .event-modal-content button:nth-child(2):hover {
+    background: #c82333;
+  }
+  
+  .event-modal-content button:nth-child(3) {
+    background: #ffc107;
+  }
+  
+  .event-modal-content button:nth-child(3):hover {
+    background: #e0a800;
+  }
+  
+  .event-modal-content button:nth-child(4) {
+    background: #6c757d;
+  }
+  
+  .event-modal-content button:nth-child(4):hover {
+    background: #5a6268;
+  }
+
+
+.react-calendar__month-view__days__day {
+  color: rgb(55, 54, 54);
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: red;
+}
+
+.react-calendar__year-view__months__month {
+  color:  rgb(55, 54, 54);
+}
+
+
+
+.react-calendar__navigation button {
+  color: rgb(55, 54, 54);
+}
+
+.react-calendar {
+ border-style: none;
+ padding-top: 50px;
+}
