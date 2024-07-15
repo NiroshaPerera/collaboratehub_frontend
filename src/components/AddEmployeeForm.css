@@ -1,0 +1,54 @@
+.add-employee {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    }
+    
+    .add-employee h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .add-employee form {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        min-height: 70vh;
+        font-family: Arial, sans-serif;
+        gap: 1rem;
+        width: 500px;
+        margin: 0 auto;
+        padding: 1rem;
+    }
+    
+    .add-employee form input[type="text"],
+    .add-employee form input[type="email"],
+    .add-employee form textarea {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .add-employee form textarea {
+      height: 100px;
+    }
+    
+    .add-employee form button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      background-color: #333;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .add-employee form button:hover {
+      background-color: #ccc;
+    }
+    
+   
+     

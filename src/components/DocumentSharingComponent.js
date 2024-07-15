@@ -52,7 +52,7 @@ const DocumentSharingComponent = ({ addDocument, currentUserId }) => {
             type="text"
             value={employeeId}
             onChange={(e) => setEmployeeId(e.target.value)}
-            placeholder="Enter employee ID"
+            placeholder="Enter user name"
           />
         </div>
         <div className="box2">
@@ -60,7 +60,7 @@ const DocumentSharingComponent = ({ addDocument, currentUserId }) => {
             type="text"
             value={collaborators}
             onChange={(e) => setCollaborators(e.target.value)}
-            placeholder="Enter collaborator IDs (comma-separated)"
+            placeholder="Enter collaborator (comma-separated)"
           />
         </div>
         <button onClick={handleUpload}>Upload Document</button>

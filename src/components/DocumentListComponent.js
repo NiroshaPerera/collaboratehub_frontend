@@ -101,7 +101,7 @@ const DocumentListComponent = ({ documents, currentUserId }) => {
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
-              placeholder="File name or employee name"
+              placeholder="File name or user name"
             />
           </label>
         </div>

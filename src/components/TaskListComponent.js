@@ -5,12 +5,10 @@ import BackButton from './BackButton';
 import './TaskListComponent.css';
 import { TaskContext } from './TaskContext';
 
-
 const TaskListComponent = () => {
   const { tasks, setTasks, updateTaskStatus, deleteTask } = useContext(TaskContext);
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortOption, setSortOption] = useState('Date');
-  const [showAssignPopup, setShowAssignPopup] = useState(false);
   const navigate  = useNavigate();
 
 
@@ -122,19 +120,6 @@ const TaskListComponent = () => {
           ))}
         </ul>
       </div>
-      <div className="task-assignment">
-      <button onClick={() => setShowAssignPopup(true)}>Open Task Assignment</button>
-      {showAssignPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <h3>Task Assignment</h3>
-            <p>Assign tasks to registered users.</p>
-            <button onClick={() => setShowAssignPopup(false)}>Close</button>
-          </div>
-        </div>
-      )}
-      </div>
-
     </div>
   );
 };

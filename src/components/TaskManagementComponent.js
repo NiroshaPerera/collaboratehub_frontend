@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import BackButton from './BackButton';
 import './TaskManagementComponent.css';
 import { Link } from 'react-router-dom';
-import { TaskContext } from './TaskContext';
+
 
 const TaskManagementComponent = ({ addTask }) => {
  
@@ -11,8 +11,8 @@ const TaskManagementComponent = ({ addTask }) => {
   const [deadline, setDeadline] = useState('');
   const [assignee, setAssignee] = useState('');
   const [priority, setPriority] = useState('Medium');
-  const [users, setUsers] = useState([]);
-
+ 
+  
 
   const handleAddTask = async () => {
     if (taskName && description && deadline && assignee && priority) {
@@ -46,7 +46,7 @@ const TaskManagementComponent = ({ addTask }) => {
         <h3>Create a New Task</h3>
         <input
           type="text"
-          placeholder="Task Name"
+          placeholder="Task"
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />

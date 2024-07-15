@@ -25,7 +25,13 @@ const ViewEventsComponent = ({ events }) => {
 
   const handleResponse = (eventId, response) => {
     setResponses(prevResponses => ({ ...prevResponses, [eventId]: response }));
-  };
+ if (response === 'accepted') {
+  alert('Event participation confirmed!');
+ } else if (response === 'declined') {
+  const reason = prompt('Please provide the reason for declining');
+  alert(`Event declined: ${reason}`);
+ }
+};
 
   const setReminder = (eventId) => {
     const event = events.find(event => event.id === eventId);
@@ -91,6 +97,7 @@ const ViewEventsComponent = ({ events }) => {
             <p>{currentEvent.description}</p>
             <p><strong>Department:</strong> {currentEvent.department}</p>
             <p><strong>Date:</strong> {format(new Date(currentEvent.date), 'Pp')}</p>
+            <p>Your response: {responses[currentEvent.id] || 'Not Responded'}</p>
             <button onClick={() => handleResponse(currentEvent.id, 'accepted')}>Accept</button>
             <button onClick={() => handleResponse(currentEvent.id, 'declined')}>Decline</button>
             <button onClick={() => setReminder(currentEvent.id)}>Set Reminder</button>

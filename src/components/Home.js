@@ -9,14 +9,13 @@ function Home() {
         <div className="logo">CollaborateHub</div>
         <nav className="nav">
           <ul>
-          <li>
-              
+            <li>
+            
+              <Link to="/about"></Link>
             </li>
             <li>
-              <a href="/about"></a>
-            </li>
-            <li>
-              <a href="/contact"></a>
+             
+              <Link to="/contact"></Link>
             </li>
           </ul>
         </nav>
