@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-const EmployeeList = ({ onEmployeeClick, searchTerm, expertiseTerm }) => {
+const EmployeeList = ({ onEmployeeClick, searchTerm, expertiseTerm, onUpdateEmployee, onDeleteEmployee }) => {
   const [employees, setEmployees] = useState([]);
   const filteredEmployees = employees.filter((employee) => {
     const fullName = `${employee.firstName} ${employee.lastName}`.toLowerCase();
@@ -10,40 +10,46 @@ const EmployeeList = ({ onEmployeeClick, searchTerm, expertiseTerm }) => {
     );
   });
 
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = async () => {
-    setIsLoading(true); // Set loading state to true 
+  const handleSearch = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(`/employees/search?searchTerm=${searchTerm}&expertiseTerm=${expertiseTerm}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch employees'); // Handle non-200 status codes
+        throw new Error('Failed to fetch employees');
       }
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
-      console.error('Error fetching employees:', error); // Log the error for debugging
+      console.error('Error fetching employees:', error);
     } finally {
-      setIsLoading(false); // Set loading state to false (optional)
+      setIsLoading(false);
     }
-  };
+  }, [searchTerm, expertiseTerm]);
 
   useEffect(() => {
     if (searchTerm || expertiseTerm) {
       handleSearch();
     }
   }, [searchTerm, expertiseTerm]);
+  
 
   return (
     <ul>
-      {filteredEmployees.map((employee) => (
-        <li key={employee.id}>
-          <button onClick={() => onEmployeeClick(employee.id)}>
-            {employee.firstName} {employee.lastName} - {employee.department} ({employee.location})
-          </button>
-        </li>
-      ))}
+      {isLoading ? (
+        <li>Loading employees...</li>
+      ) : (
+        filteredEmployees.map((employee) => (
+          <li key={employee.id}>
+            <button onClick={() => onEmployeeClick(employee.id)}>
+              {employee.firstName} {employee.lastName} - {employee.department} ({employee.location})
+            </button>
+            <button onClick={() => onUpdateEmployee(employee.id)}>Update</button>
+            <button onClick={() => onDeleteEmployee(employee.id)}>Delete</button>
+          </li>
+        ))
+      )}
     </ul>
   );
 };

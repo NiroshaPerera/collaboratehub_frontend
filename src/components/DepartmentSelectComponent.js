@@ -5,12 +5,14 @@ import { faCog, faDesktop, faDollarSign, faUserTie } from '@fortawesome/free-sol
 import BackButton from './BackButton';
 import './DepartmentSelectComponent.css';
 
+
 const DepartmentSelectComponent = () => {
     const navigate = useNavigate();
 
     const handleDepartmentClick = (department) => {
       navigate(`/task-management/${department}`);
     };
+   
 
     return (
         <div className="department-select">

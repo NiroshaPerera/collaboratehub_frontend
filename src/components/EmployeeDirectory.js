@@ -32,9 +32,6 @@ const EmployeeDirectory = () => {
     setExpertiseTerm(e.target.value);
   };
 
-  
-
-  
   const handleAddEmployee = async (newEmployee) => {
     try {
       const response = await fetch('http://backend-api-endpoint', {
@@ -60,6 +57,57 @@ const EmployeeDirectory = () => {
     
     }
   };
+  const handleEmployeeClick = (employeeId) => {
+    navigate(`/edit-employee/${employeeId}`); 
+  };
+
+  const handleUpdateEmployee = (employeeId) => {
+    navigate(`/edit-employee/$(employeeId)`);
+  };
+
+  const handleDeleteEmployee = async (employeeId) => {
+    if (window.confirm(`Are you sure you want to delete employee ${employeeId}?`)) {
+      try {
+        const response = await fetch(`/employees/${employeeId}`, {
+          method: 'DELETE',
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Error deleting employee: ${response.statusText}`);
+        }
+  
+        // Update employee data state after successful deletion
+        setEmployees(employees.filter((employee) => employee.id !== employeeId));
+        console.log('Employee deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting employee:', error);
+      }
+    }
+  };
+
+  const triggerSearch = async () => {
+    if (!searchTerm || !expertiseTerm) {
+      console.warn('Please enter both search terms (name and expertise)');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`/api/employees?name=${searchTerm}&expertise=${expertiseTerm}`);
+  
+      if (!response.ok) {
+        throw new Error(`Error searching employees: ${response.statusText}`);
+      }
+  
+      const filteredEmployees = await response.json();
+  
+      // Update EmployeeList component with fetched data
+      setEmployees(filteredEmployees);
+  
+    } catch (error) {
+      console.error('Error searching employees:', error);
+    }
+  };
+  
 
   const handleLogout = () => {
     navigate('/login');
@@ -90,6 +138,15 @@ return (
     <input type="text" placeholder="Search by Expertise" value={expertiseTerm} onChange={handleExpertiseSearch} />
     <EmployeeList employees={employees} searchTerm={searchTerm} expertiseTerm={expertiseTerm} />
     </div>
+    <button onClick={triggerSearch}>Search</button> 
+        <EmployeeList
+          employees={employees}
+          searchTerm={searchTerm}
+          expertiseTerm={expertiseTerm}
+          onEmployeeClick={handleEmployeeClick}
+          onUpdateEmployee={handleUpdateEmployee}
+          onDeleteEmployee={handleDeleteEmployee}
+        />
     </div>
     <div className="view-link">
         <Link to="/add-employee">Add Employee</Link>

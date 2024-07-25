@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import BackButton from './BackButton';
 import './Login.css'; 
-
+import axios from 'axios';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -13,13 +13,32 @@ function Login() {
 const handleSubmit = async (event) => {
   event.preventDefault();
   
+  const loginData = {
+    email: email, 
+    password,
+  };
 
-      
-      // Handle successful login, store token
-      console.log('Login successful(simulated)');
-      navigate('/dashboard'); 
-    
+  try {
+    // Send POST request to backend API for login
+    const response = await axios.post('http://localhost:5000/api/user/login', loginData);
+
+    console.log('Login successful:', response.data);
+
+    // Handle successful login
+    const token = response.data.token; 
+
+    // Store token in local storage 
+    localStorage.setItem('jwtToken', token); 
+
+    // Navigate to dashboard after successful login
+    navigate('/dashboard');
+  } catch (error) {
+    console.error('Login error:', error.response.data);
+    // Handle errors appropriately 
+    alert('Invalid credentials. Please try again.'); 
+  }
 };
+
   return (
     <div className="container">
       <BackButton />
@@ -27,12 +46,14 @@ const handleSubmit = async (event) => {
      
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
+      <label htmlFor="email">Email</label>
         <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
+          type="email"
+          id="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <label htmlFor="password">Password</label>
         <input

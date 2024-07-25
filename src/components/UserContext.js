@@ -1,45 +1,58 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Create UserContext with a method for updating users
-export const UserContext = createContext({
-  users: [],
-  updateUser: () => {},
-});
+// UserContext with a method for updating users
+export const UserContext = createContext(null); 
 
+  
 // UserProvider component with updateUser function
 export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState([]);
   const [users, setUsers] = useState([]);
 
   // Fetch users from  data source 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const registeredUsers = [
-        { id: 1, name: 'User 1', email: 'user1@example.com', role: 'Developer', bio: 'Bio of User 1' },
-        { id: 2, name: 'User 2', email: 'user2@example.com', role: 'Manager', bio: 'Bio of User 2' },
-        { id: 3, name: 'User 3', email: 'user3@example.com', role: 'Tester', bio: 'Bio of User 3' },
-      ];
-      setUsers(registeredUsers);
+    const fetchLoggedInUser = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await axios.get('http://localhost:5000/api/user', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setUser(response.data.user); 
+      } catch (error) {
+        console.error('Error fetching logged-in user:', error);
+      }
     };
-    fetchUsers();
+  
+    fetchLoggedInUser();
   }, []);
+  
 
-  // Function to update user data ( update logic)
-  const updateUser = async (updatedUser) => {
-    try {
-      // Replace with your actual update logic (using a fetch API call)
-      console.log('User updated:', updatedUser);
-      const updatedUsers = users.map((user) => (user.id === updatedUser.id ? updatedUser : user));
-      setUsers(updatedUsers);
-    } catch (error) {
-      console.error('Error updating user:', error);
-      // Handle errors appropriately (display error message to user)
-    }
+  const addUser = (user) => {
+    setUsers([...users, user]);
+    // Store users in local storage 
+    localStorage.setItem('users', JSON.stringify([...users, user]));
+  };
+
+  const removeUser = (userId) => {
+    setUsers(users.filter((user) => user.id !== userId));
+    // Update local storage 
+    localStorage.setItem('users', JSON.stringify(users.filter((user) => user.id !== userId)));
+  };
+  const updateUser = (userId, updatedData) => {
+    setUsers(users.map(user => {
+      if (user.id === userId) {
+        return { ...user, ...updatedData };
+      }
+      return user;
+    }));
   };
   
 
   return (
-    <UserContext.Provider value={{ users, updateUser }}>
+    <UserContext.Provider value={{ user, users, addUser, removeUser, updateUser }}>
       {children}
     </UserContext.Provider>
   );

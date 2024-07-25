@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
 import './Registration.css';
-
+import axios from 'axios';
 
 function Registration() {
   const [username, setUsername] = useState('');
@@ -14,24 +14,39 @@ function Registration() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-  
-
    // Check if passwords match
    if (password !== confirmPassword) {
     alert("Passwords do not match");
     return;
   }
 
-  console.log('Registration successful (simulated)');
+  
 
-    //reset form details
+  try {
+    const registrationData = {
+      username,
+      password,
+      email,
+    };
+
+    // Send POST request to backend API for registration
+    const response = await axios.post('http://localhost:5000/api/user/register', registrationData);
+
+    console.log('Registration successful:', response.data);
+
+    // Reset form details
     setUsername('');
     setPassword('');
     setConfirmPassword('');
     setEmail('');
 
-    // After successful registration, navigate to login page
+    // Navigate to login page after successful registration
     navigate('/login');
+  } catch (error) {
+    console.error('Registration error:', error.response.data);
+    // Handle errors appropriately 
+    alert('Registration failed. Please try again.');
+  }
 };
 
   return (

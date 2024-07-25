@@ -85,8 +85,28 @@
     border-radius: 5px;
   }
 
+  .controls button {
+    padding: 10px 40px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: auto; 
+    display: inline-block; 
+    margin-right: 10px;
+  }
+
+  .controls button:hover {
+    background-color: #ccc;
+    color: #333;
+    transform: scale(1.05); 
+  }
+
     .view-employees .view-link {
-    margin-top: 20px;
+    margin-top: 0px;
     text-align: center; 
   }
   

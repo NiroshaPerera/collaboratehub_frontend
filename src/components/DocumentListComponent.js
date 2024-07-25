@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BackButton from './BackButton';
 import './DocumentListComponent.css';
+import axios from 'axios';
 
 const DocumentListComponent = ({ documents, currentUserId }) => {
   const [sortBy, setSortBy] = useState('name');
@@ -11,6 +11,34 @@ const DocumentListComponent = ({ documents, currentUserId }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const documentsPerPage = 5;
   const navigate = useNavigate();
+  const [fetchDocuments, setFetchedDocuments] = useState([]);
+  const [error, setError] = useState(null);
+
+useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await axios.get('http://localhost:5000/api/documents', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          params: {
+            sortBy,
+            filterBy,
+            searchTerm,
+            page: currentPage,
+          },
+        });
+        setFetchedDocuments(response.data.documents);
+        setError(null);
+      } catch (error) {
+        console.error(error);
+        setError(error.response?.data?.message || 'An error occurred');
+      }
+    };
+    fetchDocuments();
+  }, [sortBy, filterBy, searchTerm, currentPage]);
+
 
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
@@ -24,17 +52,37 @@ const DocumentListComponent = ({ documents, currentUserId }) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleDownload = (doc) => {
-    if (doc.collaborators.includes(currentUserId)) {
-      const url = URL.createObjectURL(new Blob([doc.content], { type: doc.type }));
+  const handleDownload = async (docId) => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      console.log('Token:', token);
+      const response = await axios.get(`http://localhost:5000/api/documents/${docId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const document = response.data;
+
+      if (!document) {
+        alert('Document not found');
+        return;
+      }
+
+      if (!currentUserId || !document.collaborators.includes(currentUserId)) {
+        alert('You are not authorized to download this document');
+        return;
+      }
+
+      const url = URL.createObjectURL(new Blob([document.content], { type: document.type }));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', doc.name);
+      link.setAttribute('download', document.name);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } else {
-      alert('You do not have permission to download this document.');
+    } catch (error) {
+      console.error(error);
+      alert('Error downloading document: ' + error.message);
     }
   };
 

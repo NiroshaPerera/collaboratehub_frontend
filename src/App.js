@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import Header from './components/Header';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import Home from './components/Home';
-import Login from './components/Login';
 import Registration from './components/Registration';
+import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import Dashboard from './components/Dashboard';
 import DocumentSharingComponent from './components/DocumentSharingComponent';
@@ -22,8 +21,36 @@ import EmployeeDirectory from './components/EmployeeDirectory';
 import EmployeeDirectoryComponent from './components/EmployeeDirectoryComponent';
 import AddEmployeeForm from './components/AddEmployeeForm';
 
-const isAuthenticated = () => {
-  return true; // For demo purposes, always return true
+import axios from 'axios'; 
+
+const isAuthenticated = async () => {
+  try {
+    // Retrieve token from local storage
+    const token = localStorage.getItem('jwtToken');
+
+    // Check if token exists
+    if (!token) {
+      return false;
+    }
+
+    // Verify token using backend API
+    const verificationResponse = await axios.get('http://localhost:5000/api/auth/verify', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    // Check for successful verification response
+    if (verificationResponse.data.success) {
+      return true;
+    } else {
+      console.error('Token verification failed:', verificationResponse.data.message);
+      // Handle expired or invalid token 
+      localStorage.removeItem('jwtToken');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return false;
+  }
 };
 
 const App = () => {
@@ -31,7 +58,7 @@ const App = () => {
   const [events, setEvents] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const currentUserId = 'currentUserId'; // Replace with actual current user ID
+  const currentUserId = 'currentUserId'; 
   
   const addDocument = (doc) => {
     setDocuments(prevDocuments => [...prevDocuments, doc]);
@@ -49,7 +76,8 @@ const App = () => {
     setEmployees(prevEmployees => [...prevEmployees, employee]);
   };
 
-  
+
+ 
   
   return (
     <TaskProvider value={{ tasks, addTask }}>
@@ -78,8 +106,8 @@ const App = () => {
           <Route path="/view-events" element={isAuthenticated() ? <ViewEventsComponent events={events} /> : <Navigate to="/login" />} />
           <Route path="/task-management/:department"  element={isAuthenticated() ? <TaskManagementComponent addTask={addTask} /> : <Navigate to="/login" />} />
           <Route path="/view-tasks" element={isAuthenticated() ? <TaskListComponent /> : <Navigate to="/login" />} />
-          <Route path="/employee-directory/:department" element={isAuthenticated() ?<EmployeeDirectory addEmployee={addEmployee}/> : <Navigate to="/login" />} />
-          <Route path="/add-employee" element={isAuthenticated() ? <AddEmployeeForm /> : <Navigate to="/login" />} />
+          <Route path="/employee-directory/:department" element={isAuthenticated() ?<EmployeeDirectory employees={employees}/> : <Navigate to="/login" />} />
+          <Route path="/add-employee" element={isAuthenticated() ? <AddEmployeeForm addEmployee={addEmployee}/> : <Navigate to="/login" />} />
         </Routes>
        
       </Router>

@@ -98,6 +98,10 @@ const EventCalendarComponent = () => {
             <h3>{currentEvent.title}</h3>
             <p>{currentEvent.description}</p>
             <p><strong>Department:</strong> {currentEvent.department}</p>
+            {responses[currentEvent.id] && (
+        <p>Your response: {responses[currentEvent.id]}</p>
+      )}
+
             <button onClick={() => handleResponse(currentEvent.id, 'accepted')}>Accept</button>
             <button onClick={() => handleResponse(currentEvent.id, 'declined')}>Decline</button>
             <button onClick={() => setReminder(currentEvent.id)}>Set Reminder</button>

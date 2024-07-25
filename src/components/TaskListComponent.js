@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BackButton from './BackButton';
 import './TaskListComponent.css';
 import { TaskContext } from './TaskContext';
 
 const TaskListComponent = () => {
-  const { tasks, setTasks, updateTaskStatus, deleteTask } = useContext(TaskContext);
+  const { tasks,  updateTaskStatus, deleteTask } = useContext(TaskContext);
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortOption, setSortOption] = useState('Date');
   const navigate  = useNavigate();

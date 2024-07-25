@@ -1,13 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useDropzone } from 'react-dropzone';
 import BackButton from './BackButton';
 import './DocumentSharingComponent.css';
+import { UserContext } from './UserContext';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const DocumentSharingComponent = ({ addDocument, currentUserId }) => {
+const DocumentSharingComponent = ({ addDocument}) => {
   const [newDocument, setNewDocument] = useState(null);
-  const [employeeId, setEmployeeId] = useState('');
+  const [documentName, setDocumentName] = useState('');
+  const [username, setUsername] = useState('');
   const [collaborators, setCollaborators] = useState('');
+  const { user } = useContext(UserContext); 
+  
 
   const onDrop = useCallback((acceptedFiles) => {
     setNewDocument(acceptedFiles[0]);
@@ -16,22 +21,40 @@ const DocumentSharingComponent = ({ addDocument, currentUserId }) => {
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const handleUpload = () => {
-    if (newDocument && employeeId && collaborators) {
-      const newDoc = {
-        id: Date.now(),
-        name: newDocument.name,
-        content: newDocument,
-        type: newDocument.type,
-        uploadedBy: employeeId,
-        date: new Date().toISOString(),
-        collaborators: collaborators.split(',').map(id => id.trim()),
-      };
-      addDocument(newDoc);
+  const token = localStorage.getItem('jwtToken');
+  
+  const handleUpload = async () => {
+   if (newDocument && documentName && username && collaborators) {
+      const formData = new FormData();
+      formData.append('name', documentName);
+      formData.append('content', newDocument);
+      formData.append('uploadedBy', user._id);
+      formData.append('collaborators', collaborators);
+
+      try {
+        
+        const response = await axios.post('http://localhost:5000/api/documents', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}` 
+          },
+        });
+        console.log(response.data);
+      addDocument(formData);
       setNewDocument(null);
-      setEmployeeId('');
-      setCollaborators('');
-      alert('Document uploaded successfully!');
+        setDocumentName('');
+        setUsername('');
+        setCollaborators('');
+        alert('Document uploaded successfully!');
+      } catch (error) {
+        console.error(error);
+        alert('Error uploading document: ' + error.message); 
+        if (error.response && error.response.status === 400) {
+          alert('Bad request: Please check the file format or other input values.');
+        } else if (error.response && error.response.status === 500) {
+          alert('Server error: Please try again later.');
+        } 
+      }
     } else {
       alert('Please fill in all fields.');
     }
@@ -48,14 +71,22 @@ const DocumentSharingComponent = ({ addDocument, currentUserId }) => {
           <p>Drag & drop a file here, or click to select one</p>
         </div>
         <div className="box1">
+            <input
+              type="text"
+              value={documentName} 
+              onChange={(e) => setDocumentName(e.target.value)}
+              placeholder="Enter document name"
+            />
+          </div>
+        <div className="box2">
           <input
             type="text"
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter user name"
           />
         </div>
-        <div className="box2">
+        <div className="box3">
           <input
             type="text"
             value={collaborators}
