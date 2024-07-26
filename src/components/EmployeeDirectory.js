@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import EmployeeList from './EmployeeList';
 import AddEmployeeForm from './AddEmployeeForm';
 import { Link, useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
 import './EmployeeDirectory.css';
+
 
 const EmployeeDirectory = () => {
   const [employees, setEmployees] = useState([]);
@@ -12,17 +13,31 @@ const EmployeeDirectory = () => {
   const [expertiseTerm, setExpertiseTerm] = useState('');
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('jwtToken');
+
   // Fetch or populate employee data 
   useEffect(() => {
     const fetchEmployees = async () => {
-      // Fetch employee data from API
-      const response = await fetch('');
+      try {
+        const response = await fetch('http://localhost:5000/api/employees', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching employees');
+        }
+
       const data = await response.json();
       setEmployees(data);
-    };
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
 
-    fetchEmployees();
-  }, []);
+  fetchEmployees();
+}, [token]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -34,9 +49,12 @@ const EmployeeDirectory = () => {
 
   const handleAddEmployee = async (newEmployee) => {
     try {
-      const response = await fetch('http://backend-api-endpoint', {
+      const response = await fetch('http://localhost:5000/api/employees', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}` 
+           },
         body: JSON.stringify(newEmployee),
       });
 
@@ -62,14 +80,17 @@ const EmployeeDirectory = () => {
   };
 
   const handleUpdateEmployee = (employeeId) => {
-    navigate(`/edit-employee/$(employeeId)`);
+    navigate(`/edit-employee/${employeeId}`);
   };
 
   const handleDeleteEmployee = async (employeeId) => {
     if (window.confirm(`Are you sure you want to delete employee ${employeeId}?`)) {
       try {
-        const response = await fetch(`/employees/${employeeId}`, {
+        const response = await fetch(`http://localhost:5000/api/employees/${employeeId}`, {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
         });
   
         if (!response.ok) {
@@ -92,8 +113,12 @@ const EmployeeDirectory = () => {
     }
   
     try {
-      const response = await fetch(`/api/employees?name=${searchTerm}&expertise=${expertiseTerm}`);
-  
+      const response = await fetch(`http://localhost:5000/api/employees/search?searchTerm=${searchTerm}&expertiseTerm=${expertiseTerm}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
+
       if (!response.ok) {
         throw new Error(`Error searching employees: ${response.statusText}`);
       }
@@ -110,7 +135,7 @@ const EmployeeDirectory = () => {
   
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/');
   };
 
 return (

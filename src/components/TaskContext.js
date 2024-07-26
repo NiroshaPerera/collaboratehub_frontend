@@ -6,10 +6,14 @@ export const TaskContext = createContext();
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
+  const token = localStorage.getItem('jwtToken');
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get('/api/tasks');
+        const response = await axios.get('http://localhost:5000/api/tasks', {
+          headers: { Authorization: `Bearer ${token}` },
+        }); 
         setTasks(response.data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -21,7 +25,9 @@ export const TaskProvider = ({ children }) => {
 
   const addTask = async (task) => {
     try {
-      const response = await axios.post('/api/tasks', task);
+      const response = await axios.post('http://localhost:5000/api/tasks', task, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setTasks([...tasks, response.data]);
     } catch (error) {
       console.error('Error adding task:', error);
@@ -30,7 +36,9 @@ export const TaskProvider = ({ children }) => {
 
   const updateTaskStatus = async (taskId, status) => {
     try {
-      const response = await axios.put(`/api/tasks/${taskId}`, { status });
+      const response = await axios.put(`http://localhost:5000/api/tasks/${taskId}`, { status }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const updatedTask = response.data;
 
       setTasks((prevTasks) =>
@@ -44,7 +52,9 @@ export const TaskProvider = ({ children }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`/api/tasks/${taskId}`);
+      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
       console.error('Error deleting task:', error);

@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
 import './DocumentListComponent.css';
 import axios from 'axios';
+import { UserContext } from './UserContext';
 
-const DocumentListComponent = ({ documents, currentUserId }) => {
+const DocumentListComponent = ({}) => {
+  const [documents, setDocuments] = useState([]);
   const [sortBy, setSortBy] = useState('name');
   const [filterBy, setFilterBy] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const documentsPerPage = 5;
   const navigate = useNavigate();
-  const [fetchDocuments, setFetchedDocuments] = useState([]);
-  const [error, setError] = useState(null);
+  const { user } = useContext(UserContext);
+  
 
 useEffect(() => {
     const fetchDocuments = async () => {
@@ -29,15 +31,14 @@ useEffect(() => {
             page: currentPage,
           },
         });
-        setFetchedDocuments(response.data.documents);
-        setError(null);
+        setDocuments(response.data.documents);
+        
       } catch (error) {
         console.error(error);
-        setError(error.response?.data?.message || 'An error occurred');
       }
     };
     fetchDocuments();
-  }, [sortBy, filterBy, searchTerm, currentPage]);
+  }, [sortBy, filterBy, searchTerm, currentPage, user]);
 
 
   const handleSortChange = (e) => {
@@ -52,11 +53,11 @@ useEffect(() => {
     setSearchTerm(e.target.value);
   };
 
-  const handleDownload = async (docId) => {
+  const handleDownload = async (documentId) => {
     try {
       const token = localStorage.getItem('jwtToken');
       console.log('Token:', token);
-      const response = await axios.get(`http://localhost:5000/api/documents/${docId}`, {
+      const response = await axios.get(`http://localhost:5000/api/documents/${documentId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -68,7 +69,7 @@ useEffect(() => {
         return;
       }
 
-      if (!currentUserId || !document.collaborators.includes(currentUserId)) {
+      if (!user || !document.collaborators.includes(user._id)) {
         alert('You are not authorized to download this document');
         return;
       }
@@ -106,7 +107,7 @@ useEffect(() => {
   const currentDocuments = searchedDocuments.slice((currentPage - 1) * documentsPerPage, currentPage * documentsPerPage);
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/');
   };
   
   return (

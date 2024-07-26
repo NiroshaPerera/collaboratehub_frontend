@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import BackButton from './BackButton';
 import './AddEmployeeForm.css';
 
-const AddEmployeeForm = ({ onSubmit }) => {
+const AddEmployeeForm = ({}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [department, setDepartment] = useState('');
   const [expertise, setExpertise] = useState('');
   const [email, setEmail] = useState(''); 
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newEmployee = {
       firstName,
@@ -18,13 +19,30 @@ const AddEmployeeForm = ({ onSubmit }) => {
       expertise,
       email, 
     };
-    onSubmit(newEmployee);
-    // Clear form after submission
-    setFirstName('');
-    setLastName('');
-    setDepartment('');
-    setExpertise('');
-    setEmail(''); 
+
+    const token = localStorage.getItem('jwtToken');
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/employees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+         },
+        body: JSON.stringify(newEmployee),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error adding employee');
+      }
+
+      // Handle successful submission 
+      console.log('Employee added successfully');
+      alert('Employee added successfully!');
+      // Reset form fields or navigate to employee list
+    } catch (error) {
+      setErrorMessage('Error adding employee. Please try again.');
+      console.error('Error adding employee:', error);
+    }
   };
 
   return (

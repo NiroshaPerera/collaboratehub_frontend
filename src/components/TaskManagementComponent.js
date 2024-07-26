@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BackButton from './BackButton';
 import './TaskManagementComponent.css';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 
 const TaskManagementComponent = ({ addTask }) => {
  
@@ -25,14 +25,22 @@ const TaskManagementComponent = ({ addTask }) => {
         priority,
         status: 'Pending',
       };
-     
-      addTask(newTask);
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await axios.post('http://localhost:5000/api/tasks', newTask, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      addTask(response.data);
       setTaskName('');
       setDescription('');
       setDeadline('');
       setAssignee('');
       setPriority('Medium');
       alert('Task added successfully');
+    } catch (error) {
+      console.error('Error adding task:', error);
+      alert('Failed to add task. Please try again.');
+    }
     }  else {
     alert('Please fill in all fields');
   }

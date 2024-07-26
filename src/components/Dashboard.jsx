@@ -20,7 +20,7 @@ const Dashboard = ({ loggedInUser }) => {
   const handleLogout = () => {
     localStorage.removeItem('jwtToken'); // Remove token on logout
     setStoredToken(null);
-    navigate('/login');
+    navigate('/');
   };
 
   return (

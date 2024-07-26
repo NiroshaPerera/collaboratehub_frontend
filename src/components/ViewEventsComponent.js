@@ -5,13 +5,31 @@ import { faCalendar, faChevronRight  } from '@fortawesome/free-solid-svg-icons';
 import BackButton from './BackButton';
 import './ViewEventsComponent.css';
 import { format } from 'date-fns';
+import axios from 'axios';
 
-const ViewEventsComponent = ({ events }) => {
+const ViewEventsComponent = () => {
+  const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [reminders, setReminders] = useState([]);
   const [responses, setResponses] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await axios.get('http://localhost:5000/api/events', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleEventClick = (event) => {
     setCurrentEvent(event);
@@ -23,15 +41,27 @@ const ViewEventsComponent = ({ events }) => {
     setCurrentEvent(null);
   };
 
-  const handleResponse = (eventId, response) => {
+  const handleResponse = async (eventId, response) => {
+    try {
+      const token = localStorage.getItem('jwtToken'); 
+      const responseBody = await axios.put(`http://localhost:5000/api/events/${eventId}/respond`, { response }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     setResponses(prevResponses => ({ ...prevResponses, [eventId]: response }));
- if (response === 'accepted') {
-  alert('Event participation confirmed!');
- } else if (response === 'declined') {
-  const reason = prompt('Please provide the reason for declining');
-  alert(`Event declined: ${reason}`);
- }
-};
+    if (responseBody.data.success) {
+      if (response === 'accepted') {
+      alert('Event participation confirmed!');
+      } else if (response === 'declined') {
+        const reason = prompt('Please provide the reason for declining');
+        alert(`Event declined: ${reason}`);
+      }
+        } else {
+          console.error('Error updating event response:', responseBody.error);
+        }
+      } catch (error) {
+        console.error('Error updating event response:', error);
+      }
+    };
 
   const setReminder = (eventId) => {
     const event = events.find(event => event.id === eventId);
@@ -60,7 +90,7 @@ const ViewEventsComponent = ({ events }) => {
   }, [reminders, events]);
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/');
   };
 
   return (

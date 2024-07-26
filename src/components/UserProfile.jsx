@@ -3,45 +3,59 @@ import { useParams } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import BackButton from './BackButton';
 import './UserProfile.css';
+import axios from 'axios';
+
 
 const UserProfile = () => {
+  const { userId } = useParams();
   const { user } = useContext(UserContext);
 
-  // State for editing profile details 
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({
     name: user?.name || '',
     email: user?.email || '',
     role: user?.role || '',
     bio: user?.bio || '',
-    imagePreview: user?.image || '', 
+    imagePreview: user?.image || '',
   });
 
- 
-  const handleEditProfileClick = () => {
-    setIsEditProfileOpen(!isEditProfileOpen);
-  };
+  const token = localStorage.getItem('jwtToken');
 
   const handleChange = (event) => {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  
-  // Functionality for saving profile 
-  const handleSaveProfile = () => {
-    // updating user details
-    console.log('Profile details updated (simulated):', userDetails);
-    setIsEditProfileOpen(false);
-    alert('Profile updated successfully (simulated)');
+  const handleEditProfileClick = () => {
+    setIsEditProfileOpen(!isEditProfileOpen);
+  };
+
+  const handleSaveProfile = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log('Updating profile with data:', userDetails);
+      const response = await axios.put(`http://localhost:5000/api/user/${userId}`, userDetails, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      console.log('Profile updated successfully:', response.data);
+      setIsEditProfileOpen(false);
+      alert('Profile updated successfully');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Error updating profile. Please try again.');
+    }
   };
 
   const renderUserProfile = () => (
     <div className="user-profile">
-      <h2>{userDetails.name}</h2>
-      <p><strong>Email:</strong> {userDetails.email}</p>
-      <p><strong>Role:</strong> {userDetails.role}</p>
-      <p><strong>Bio:</strong> {userDetails.bio}</p>
-      {userDetails.imagePreview && <img src={userDetails.imagePreview} alt="Profile Picture" />}
+      <h2>{user.name}</h2>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Role:</strong> {user.role}</p>
+      <p><strong>Bio:</strong> {user.bio}</p>
+      {user.image && <img src={user.image} alt="Profile Picture" />}
     </div>
   );
 
@@ -61,7 +75,7 @@ const UserProfile = () => {
         name="email"
         value={userDetails.email}
         onChange={handleChange}
-        disabled 
+        disabled
       />
       <label htmlFor="role">Role: </label>
       <input
@@ -73,8 +87,8 @@ const UserProfile = () => {
       <label htmlFor="bio">Bio: </label>
       <textarea name="bio" value={userDetails.bio} onChange={handleChange} />
       <label htmlFor="image">Profile Image: </label>
-      <input type="file" name="image" disabled /> 
-     
+      <input type="file" name="image"/>
+
       <button type="submit">Save Profile</button>
       <button type="button" onClick={handleEditProfileClick}>Cancel</button>
     </form>

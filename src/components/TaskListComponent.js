@@ -3,12 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from './BackButton';
 import './TaskListComponent.css';
 import { TaskContext } from './TaskContext';
+import axios from 'axios';
 
 const TaskListComponent = () => {
-  const { tasks,  updateTaskStatus, deleteTask } = useContext(TaskContext);
+  const { tasks, setTasks, updateTaskStatus, deleteTask } = useContext(TaskContext);
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortOption, setSortOption] = useState('Date');
   const navigate  = useNavigate();
+
+  const token = localStorage.getItem('jwtToken');
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/tasks', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
 
   const filterTasks = (tasks) => {
@@ -65,7 +83,7 @@ const TaskListComponent = () => {
 
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/');
 };
 
   return (

@@ -21,6 +21,7 @@ import EmployeeDirectory from './components/EmployeeDirectory';
 import EmployeeDirectoryComponent from './components/EmployeeDirectoryComponent';
 import AddEmployeeForm from './components/AddEmployeeForm';
 
+
 import axios from 'axios'; 
 
 const isAuthenticated = async () => {
@@ -90,6 +91,7 @@ const App = () => {
           <Route path="/register" element={<Registration />} />
           
           <Route path="/profile/:userId" element={<UserProfile />} /> 
+          
           <Route
             path="/dashboard/*"
             element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />}

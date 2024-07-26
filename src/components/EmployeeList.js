@@ -15,7 +15,7 @@ const EmployeeList = ({ onEmployeeClick, searchTerm, expertiseTerm, onUpdateEmpl
   const handleSearch = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/employees/search?searchTerm=${searchTerm}&expertiseTerm=${expertiseTerm}`);
+      const response = await fetch(`http://localhost:5000/api/employees/search?searchTerm=${searchTerm}&expertiseTerm=${expertiseTerm}`);
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }

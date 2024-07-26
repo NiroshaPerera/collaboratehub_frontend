@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import BackButton from './BackButton';
 import './EventCalendarComponent.css';
+import axios from 'axios';
 
 const EventCalendarComponent = () => {
   const { department } = useParams();
@@ -16,17 +16,21 @@ const EventCalendarComponent = () => {
   const [reminders, setReminders] = useState([]);
   const [responses, setResponses] = useState({});
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const eventList = [
-        { id: 1, date: new Date(), title: 'Meeting', description: 'Project meeting', department: 'Engineering' },
-        { id: 2, date: new Date(new Date().setDate(new Date().getDate() + 1)), title: 'Deadline', description: 'Submit report', department: 'Marketing' },
-      ];
-      setEvents(eventList);
+ const fetchEvents = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        const response = await axios.get(`http://localhost:5000/api/events?department=${department}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+        setEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
     };
-
-    fetchEvents();
-  }, []);
+  
+    useEffect(() => {
+      fetchEvents();
+    }, [department]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -42,8 +46,13 @@ const EventCalendarComponent = () => {
     setCurrentEvent(null);
   };
 
-  const handleResponse = (eventId, response) => {
-    setResponses(prevResponses => ({ ...prevResponses, [eventId]: response }));
+  const handleResponse = async (eventId, response) => { 
+    try {
+      await axios.put(`http://localhost:5000/api/events/${eventId}/respond`, { response }); 
+      setResponses(prevResponses => ({ ...prevResponses, [eventId]: response }));
+    } catch (error) {
+      console.error('Error updating event response:', error);
+    }
   };
 
   const setReminder = (eventId) => {
