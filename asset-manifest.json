@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/collaboratehub_frontend/static/css/main.cfad6413.chunk.css",
+    "main.js": "/collaboratehub_frontend/static/js/main.e431278a.chunk.js",
+    "main.js.map": "/collaboratehub_frontend/static/js/main.e431278a.chunk.js.map",
+    "runtime~main.js": "/collaboratehub_frontend/static/js/runtime~main.5d41f9e6.js",
+    "runtime~main.js.map": "/collaboratehub_frontend/static/js/runtime~main.5d41f9e6.js.map",
+    "static/css/2.12f8b395.chunk.css": "/collaboratehub_frontend/static/css/2.12f8b395.chunk.css",
+    "static/js/2.530cd6ce.chunk.js": "/collaboratehub_frontend/static/js/2.530cd6ce.chunk.js",
+    "static/js/2.530cd6ce.chunk.js.map": "/collaboratehub_frontend/static/js/2.530cd6ce.chunk.js.map",
+    "index.html": "/collaboratehub_frontend/index.html",
+    "precache-manifest.8eb27c19a5a88d36a9f8a232a5d7cb08.js": "/collaboratehub_frontend/precache-manifest.8eb27c19a5a88d36a9f8a232a5d7cb08.js",
+    "service-worker.js": "/collaboratehub_frontend/service-worker.js",
+    "static/css/2.12f8b395.chunk.css.map": "/collaboratehub_frontend/static/css/2.12f8b395.chunk.css.map",
+    "static/css/main.cfad6413.chunk.css.map": "/collaboratehub_frontend/static/css/main.cfad6413.chunk.css.map"
+  }
+}
