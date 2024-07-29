@@ -25,7 +25,7 @@ import DocumentManagement from './components/DocumentManagement';
 
 import axios from 'axios'; 
 
-const BASE_URL = 'https://collaboratehub-backend.vercel.app/';
+
 
 const isAuthenticated = async () => {
   try {
