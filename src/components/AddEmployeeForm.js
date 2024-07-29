@@ -13,6 +13,7 @@ const AddEmployeeForm = ({}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newEmployee = {
+      id: Date.now(),
       firstName,
       lastName,
       department,

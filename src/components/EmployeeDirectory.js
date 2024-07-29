@@ -11,6 +11,7 @@ const EmployeeDirectory = () => {
   const [showAddEmployeeForm, setShowAddEmployeeForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [expertiseTerm, setExpertiseTerm] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem('jwtToken');
@@ -75,8 +76,23 @@ const EmployeeDirectory = () => {
     
     }
   };
-  const handleEmployeeClick = (employeeId) => {
-    navigate(`/edit-employee/${employeeId}`); 
+  const handleEmployeeClick = async (employeeId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/employees/${employeeId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Error fetching employee details');
+      }
+
+      const data = await response.json();
+      setSelectedEmployee(data);
+    } catch (error) {
+      console.error('Error fething employee details:', error);
+    }
   };
 
   const handleUpdateEmployee = (employeeId) => {
@@ -177,9 +193,17 @@ return (
         <Link to="/add-employee">Add Employee</Link>
         {showAddEmployeeForm && <AddEmployeeForm onSubmit={handleAddEmployee} />}
       </div>
-  </div>
-);
+      {selectedEmployee && (
+        <div className="employee-details-modal">
+          <h3>Employee Details</h3>
+          <p>Name: {selectedEmployee.firstName} {selectedEmployee.lastName}</p>
+          <button onClick={() => setSelectedEmployee(null)}>Close</button>
+        </div>
+      )}
+    </div>
+  );
 };
+
 
 export default EmployeeDirectory;
 

@@ -3,11 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 const EmployeeList = ({ onEmployeeClick, searchTerm, expertiseTerm, onUpdateEmployee, onDeleteEmployee }) => {
   const [employees, setEmployees] = useState([]);
   const filteredEmployees = employees.filter((employee) => {
-    const fullName = `${employee.firstName} ${employee.lastName}`.toLowerCase();
-    return (
-      fullName.includes(searchTerm.toLowerCase()) &&
-      employee.expertise.toLowerCase().includes(expertiseTerm.toLowerCase())
-    );
+  
+    return employee.firstName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const [isLoading, setIsLoading] = useState(false);

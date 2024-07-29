@@ -96,7 +96,7 @@ useEffect(() => {
     return 0;
   });
 
-  const filteredDocuments = filterBy === 'all' ? sortedDocuments : sortedDocuments.filter(doc => doc.type.includes(filterBy));
+  const filteredDocuments = filterBy === 'all' ? sortedDocuments : sortedDocuments.filter(doc => doc.type.startsWith(filterBy));
 
   const searchedDocuments = filteredDocuments.filter(doc =>
     doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

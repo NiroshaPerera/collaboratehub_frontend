@@ -130,6 +130,33 @@
     transform: scale(1.05); 
   }
     
+  .view-employees .employee-details-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  
+  .view-employees .employee-details-modal h3 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .view-employees .employee-details-modal p {
+    margin-bottom: 5px;
+  }
+  
+  .view-employees .employee-details-modal button {
+    background-color: #ccc;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
   
     
     @media (max-width: 768px) {

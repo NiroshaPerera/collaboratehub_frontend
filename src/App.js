@@ -20,6 +20,7 @@ import { UserProvider } from './components/UserContext';
 import EmployeeDirectory from './components/EmployeeDirectory';
 import EmployeeDirectoryComponent from './components/EmployeeDirectoryComponent';
 import AddEmployeeForm from './components/AddEmployeeForm';
+import DocumentManagement from './components/DocumentManagement';
 
 
 import axios from 'axios'; 
@@ -84,7 +85,7 @@ const App = () => {
     <TaskProvider value={{ tasks, addTask }}>
       <UserProvider>
      
-      <Router>
+      <Router >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -101,7 +102,8 @@ const App = () => {
           <Route path="/dashboard/event-calendar" element={isAuthenticated() ? <EventCalendarPage /> : <Navigate to="/login" />} />
           <Route path="/dashboard/task-management" element={isAuthenticated() ? <DepartmentSelectComponent /> : <Navigate to="/login" />} />
           <Route path="/dashboard/employee-directory" element={isAuthenticated() ? <EmployeeDirectoryComponent /> : <Navigate to="/login" />} />
-          <Route path="/document-sharing/:department" element={isAuthenticated() ? <DocumentSharingComponent addDocument={addDocument} currentUserId={currentUserId} /> : <Navigate to="/login" />} />
+          <Route path="/document-sharing/:department"element={isAuthenticated() ? ( <DocumentManagement addDocument={setDocuments} />  ) : (<Navigate to="/login" />  )}/>
+
           <Route path="/view-documents" element={isAuthenticated() ? <DocumentListComponent documents={documents} currentUserId={currentUserId} /> : <Navigate to="/login" />} />
           <Route path="/event-calendar/:department" element={isAuthenticated() ? <EventCalendarComponent /> : <Navigate to="/login" />} />
           <Route path="/add-event/:department" element={isAuthenticated() ? <AddEventComponent addEvent={addEvent} /> : <Navigate to="/login" />} />
